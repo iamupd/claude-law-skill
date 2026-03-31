@@ -1,21 +1,40 @@
-<p align="center">
-  <img src="https://img.shields.io/badge/Claude_Code-Skill-blueviolet?style=for-the-badge" alt="Claude Code Skill" />
-  <img src="https://img.shields.io/badge/API-국가법령정보센터-007aff?style=for-the-badge" alt="Law API" />
-  <img src="https://img.shields.io/badge/lang-한국어-red?style=for-the-badge" alt="Korean" />
-</p>
+# claude-law-skill
 
-<p align="center">
-  <img src="https://img.shields.io/badge/license-MIT-green?style=flat-square" alt="License" />
-  <img src="https://img.shields.io/badge/PRs-welcome-ff69b4?style=flat-square" alt="PRs Welcome" />
-</p>
+![Claude Skill](https://img.shields.io/badge/Claude-Cowork%20Skill-blueviolet?logo=anthropic&logoColor=white)
+![API](https://img.shields.io/badge/API-국가법령정보센터-007aff)
+![Lang](https://img.shields.io/badge/lang-한국어-red)
+![License](https://img.shields.io/badge/License-MIT-green)
+![PRs](https://img.shields.io/badge/PRs-welcome-ff69b4)
 
-# /law - 한국 법령 조회 스킬 (Claude Code)
+> Claude Cowork 스킬 — 한국 법령 조회 및 의무항목 매핑
 
-[국가법령정보센터 Open API](https://open.law.go.kr)를 활용하여 한국 법령을 조회하는 **Claude Code 스킬**입니다.
+[국가법령정보센터 Open API](https://open.law.go.kr)를 활용하여 한국 법령을 조회하는 Claude Code 스킬입니다. 개발 중 법령 내용을 빠르게 참조하고, DB에 저장된 의무항목과의 매핑 관계까지 확인할 수 있습니다.
 
-개발 중 법령 내용을 빠르게 참조하고, DB에 저장된 의무항목과의 매핑 관계까지 확인할 수 있습니다.
+---
+
+## 설치
+
+`law.md` 파일을 프로젝트에 추가하고 `CLAUDE.md`에서 참조합니다.
+
+```bash
+mkdir -p skills/law
+curl -o skills/law/law.md https://raw.githubusercontent.com/iamupd/claude-law-skill/main/law.md
+```
+
+`CLAUDE.md`에 추가:
+
+```markdown
+## Custom Skills
+- `/law` — 한국 법령 조회. 정의: `skills/law/law.md`
+```
+
+---
 
 ## 사용법
+
+### Claude 스킬로 사용
+
+Claude에게 슬래시 명령으로 요청합니다:
 
 ```
 /law 중대재해처벌법 제4조           # 특정 조문 조회
@@ -25,7 +44,7 @@
 /law recent                        # 최근 개정 법령 조회
 ```
 
-## 출력 예시
+### 출력 예시
 
 ```
 ━━ 중대재해 처벌 등에 관한 법률 제4조 ━━
@@ -47,61 +66,55 @@
 시행일: 2022-01-27 | 최종 개정: 2024-01-01
 ```
 
-## 설치
+---
 
-`law.md` 파일을 프로젝트에 추가하고 `CLAUDE.md`에서 참조합니다.
+## 구조
 
-```bash
-# 다운로드
-mkdir -p skills/law
-curl -o skills/law/law.md https://raw.githubusercontent.com/iamupd/claude-law-skill/main/law.md
+```
+claude-law-skill/
+├── law.md        # Claude 스킬 정의 (트리거 조건 + 실행 지침)
+├── README.md     # 이 문서
+└── LICENSE       # MIT
 ```
 
-`CLAUDE.md`에 추가:
-
-```markdown
-## Custom Skills
-- `/law` — 한국 법령 조회. 정의: `skills/law/law.md`
-```
+---
 
 ## 기능 상세
 
-### 조문 조회 (`/law <법령명> <조항>`)
+| 커맨드 | 설명 | API 키 |
+|--------|------|:------:|
+| `/law <법령명> <조항>` | 조문 조회 + 의무항목 매핑 + 참조 법령 | 필요 |
+| `/law search <키워드>` | 법령명·조문 키워드 검색 | 필요 |
+| `/law map <O-코드>` | 의무항목 코드로 근거법령 역추적 | 불필요 |
+| `/law diff <조항>` | DB 저장 내용 vs API 최신 비교 | 필요 |
+| `/law recent` | 관리 대상 법령 최근 개정 현황 | 필요 |
 
-국가법령정보센터 API로 조문 내용을 조회합니다. DB에 의무항목이 매핑되어 있으면 함께 표시합니다.
+**API 키 없이 사용 가능한 기능:** `map`, `diff`(DB 내용만)
 
-### 키워드 검색 (`/law search <키워드>`)
-
-법령명, 조문 제목 등에서 키워드를 검색하여 테이블로 출력합니다.
-
-### 의무항목 매핑 (`/law map <O-코드>`)
-
-의무항목 코드(O-01~O-13)로 근거 법령을 역추적합니다. **API 키 없이 DB만으로 동작합니다.**
-
-### DB vs API 비교 (`/law diff <조항>`)
-
-DB에 저장된 법령 내용과 API 최신 내용을 비교하여 개정 여부를 확인합니다.
-
-### 최근 개정 (`/law recent`)
-
-관리 대상 법령의 최근 개정 현황을 조회합니다.
-
-## API 키 없이 사용
-
-| 커맨드 | API 키 필요 |
-|--------|:-----------:|
-| `/law map <O-코드>` | X |
-| `/law diff` (DB 내용만) | X |
-| `/law <법령명> <조항>` | O |
-| `/law search <키워드>` | O |
-| `/law recent` | O |
-
-API 키 발급: [open.law.go.kr](https://open.law.go.kr) 가입 후 `.env`에 `LAW_API_OC_KEY="이메일ID"` 추가
+---
 
 ## 대상 법령
 
-- 중대재해 처벌 등에 관한 법률 (+ 시행령)
-- 산업안전보건법 (+ 시행령)
+| 법령 | 구분 |
+|------|------|
+| 중대재해 처벌 등에 관한 법률 | 법률 |
+| 중대재해 처벌 등에 관한 법률 시행령 | 대통령령 |
+| 산업안전보건법 | 법률 |
+| 산업안전보건법 시행령 | 대통령령 |
+
+---
+
+## API 키 발급
+
+1. [open.law.go.kr](https://open.law.go.kr) 회원가입
+2. API 키 발급 신청
+3. `.env`에 설정:
+
+```env
+LAW_API_OC_KEY="등록된_이메일_ID"
+```
+
+---
 
 ## 국가법령정보센터 API
 
@@ -110,9 +123,31 @@ API 키 발급: [open.law.go.kr](https://open.law.go.kr) 가입 후 `.env`에 `L
 | 검색 URL | `http://www.law.go.kr/DRF/lawSearch.do` |
 | 본문 URL | `http://www.law.go.kr/DRF/lawService.do` |
 | 인증 | 쿼리 파라미터 `OC={이메일ID}` |
-| 응답 형식 | JSON |
+| 응답 형식 | JSON (`type=JSON`) |
 | Rate Limit | 없음 (1초 딜레이 권장) |
 
+---
+
+## 사전 요구사항
+
+| 기능 | 필요 환경 |
+|------|----------|
+| 조문 조회, 검색, 최근 개정 | 국가법령정보센터 API 키 |
+| 의무항목 매핑 (`map`) | PostgreSQL + Prisma (`Regulation`, `ObligationItem` 모델) |
+| DB 비교 (`diff`) | PostgreSQL + Prisma |
+
+---
+
+## 한계
+
+- 국가법령정보센터 API가 일시적으로 불안정할 수 있습니다 (타임아웃 30초)
+- 부칙은 조회 대상에서 제외됩니다
+- DB 매핑 기능(`map`, `diff`)은 Prisma 기반 프로젝트에서만 동작합니다
+
+---
+
 ## 라이선스
+
+![License](https://img.shields.io/badge/License-MIT-green)
 
 MIT
