@@ -1,12 +1,12 @@
 ---
-name: law-search
+name: law
 description: 한국 법령 조회, 검색, 조문 비교, 개정 감지, 의무항목 매핑. 국가법령정보센터 Open API 사용. Korean law lookup, search, diff, amendment detection, obligation mapping via law.go.kr API.
 argument-hint: "[search|article|diff|recent|history|map] [arguments]"
 disable-model-invocation: true
 allowed-tools: "Bash(curl *), Bash(node *), Bash(cat *), Bash(psql *), Bash(docker *), Read, Write, Grep"
 ---
 
-# /law-search — 한국 법령 조회 스킬
+# /law — 한국 법령 조회 스킬
 
 국가법령정보센터 공동활용 Open API를 사용하여 한국 법령을 조회·검색·비교합니다.
 
@@ -57,7 +57,7 @@ DB 모드 확인:
 
 ---
 
-### 1. `/law-search search <키워드>` — 법령 검색
+### 1. `/law search <키워드>` — 법령 검색
 
 키워드로 법령을 검색합니다.
 
@@ -77,7 +77,7 @@ curl -s -m 30 "http://www.law.go.kr/DRF/lawSearch.do?OC={OC}&target=law&type=JSO
  1 │ 산업안전보건법                  │ 법률    │ 일부개정 │ 2024-01-01
  2 │ 산업안전보건법 시행령            │ 대통령령 │ 일부개정 │ 2024-03-01
 
-조문 조회: /law-search article 산업안전보건법 제29조
+조문 조회: /law article 산업안전보건법 제29조
 ```
 
 **주의:**
@@ -86,7 +86,7 @@ curl -s -m 30 "http://www.law.go.kr/DRF/lawSearch.do?OC={OC}&target=law&type=JSO
 
 ---
 
-### 2. `/law-search article <법령명> [조항]` — 조문 조회
+### 2. `/law article <법령명> [조항]` — 조문 조회
 
 법령 본문을 조회합니다.
 
@@ -167,12 +167,12 @@ curl -s -m 30 "http://www.law.go.kr/DRF/lawService.do?OC={OC}&target=law&type=JS
   제4조  (사업주와 경영책임자등의 안전 및 보건 확보의무)
   ...
 
-조문 조회: /law-search article {법령명} 제4조
+조문 조회: /law article {법령명} 제4조
 ```
 
 ---
 
-### 3. `/law-search diff <법령명> <조항> [비교대상]` — 조문 비교
+### 3. `/law diff <법령명> <조항> [비교대상]` — 조문 비교
 
 API 최신 조문 내용과 비교대상을 비교합니다.
 
@@ -211,7 +211,7 @@ API 시행일: 2024-01-01
 
 ---
 
-### 4. `/law-search recent [법령명] [일수]` — 최근 개정 조회
+### 4. `/law recent [법령명] [일수]` — 최근 개정 조회
 
 최근 개정된 법령을 조회합니다.
 
@@ -251,7 +251,7 @@ curl -s -m 30 "http://www.law.go.kr/DRF/lawSearch.do?OC={OC}&target=lsHstInf&typ
 
 ---
 
-### 5. `/law-search history <법령명>` — 법령 연혁
+### 5. `/law history <법령명>` — 법령 연혁
 
 특정 법령의 연혁(제정·개정 이력)을 조회합니다.
 
@@ -277,13 +277,13 @@ curl -s -m 30 "http://www.law.go.kr/DRF/lawSearch.do?OC={OC}&target=law&type=JSO
 
 ---
 
-### 6. `/law-search map <O-코드>` — 의무항목 매핑 (DB 모드 전용)
+### 6. `/law map <O-코드>` — 의무항목 매핑 (DB 모드 전용)
 
 **[DB 모드 전용]** 의무항목 코드에서 근거 법령을 역추적합니다.
 
 DB 모드가 아닌 경우:
 ```
-/law-search map은 DB 모드에서만 사용 가능합니다.
+/law map은 DB 모드에서만 사용 가능합니다.
 프로젝트에 prisma/schema.prisma가 있고 Regulation 모델이 정의되어야 합니다.
 ```
 
@@ -344,22 +344,22 @@ WHERE oi.code = '{O-코드}';
 사용법을 안내합니다:
 
 ```
-━━ /law-search — 한국 법령 조회 도구 ━━
+━━ /law — 한국 법령 조회 도구 ━━
 
-  /law-search search <키워드>              법령 검색
-  /law-search article <법령명> [조항]       조문 조회
-  /law-search diff <법령명> <조항> [비교]   API vs 로컬 비교
-  /law-search recent [법령명] [일수]        최근 개정 조회
-  /law-search history <법령명>             법령 연혁
-  /law-search map <O-코드>                의무항목 매핑 (DB 모드)
+  /law search <키워드>              법령 검색
+  /law article <법령명> [조항]       조문 조회
+  /law diff <법령명> <조항> [비교]   API vs 로컬 비교
+  /law recent [법령명] [일수]        최근 개정 조회
+  /law history <법령명>             법령 연혁
+  /law map <O-코드>                의무항목 매핑 (DB 모드)
 
 예시:
-  /law-search search 안전보건교육
-  /law-search article 중대재해처벌법 제4조
-  /law-search diff 산업안전보건법 제29조 ./docs/old.txt
-  /law-search recent 중대재해처벌법 90
-  /law-search history 산업안전보건법
-  /law-search map O-01
+  /law search 안전보건교육
+  /law article 중대재해처벌법 제4조
+  /law diff 산업안전보건법 제29조 ./docs/old.txt
+  /law recent 중대재해처벌법 90
+  /law history 산업안전보건법
+  /law map O-01
 
 설정: LAW_API_OC_KEY 환경변수에 OC 값 설정
 발급: https://open.law.go.kr
