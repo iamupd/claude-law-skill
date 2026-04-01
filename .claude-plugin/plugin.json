@@ -1,0 +1,10 @@
+{
+  "name": "law",
+  "description": "한국 국가법령정보센터 Open API 기반 법령 조회·검색·비교·개정 감지·의무항목 매핑",
+  "version": "2.0.0",
+  "author": {
+    "name": "iamupd"
+  },
+  "repository": "https://github.com/iamupd/claude-law-skill",
+  "license": "MIT"
+}
