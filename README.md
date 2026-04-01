@@ -1,4 +1,4 @@
-# claude-law-skill
+# law-search
 
 ![Claude Skill](https://img.shields.io/badge/Claude-Cowork%20Skill-blueviolet?logo=anthropic&logoColor=white)
 ![Plugin](https://img.shields.io/badge/Claude-Plugin-blue?logo=anthropic&logoColor=white)
@@ -19,16 +19,16 @@
 ### 방법 1: 플러그인으로 설치 (권장)
 
 ```bash
-git clone https://github.com/iamupd/claude-law-skill.git
-claude --plugin-dir ./claude-law-skill
+git clone https://github.com/iamupd/law-search.git
+claude --plugin-dir ./law-search
 ```
 
 ### 방법 2: 스킬 파일만 복사
 
 ```bash
-mkdir -p .claude/skills/law
-curl -o .claude/skills/law/SKILL.md \
-  https://raw.githubusercontent.com/iamupd/claude-law-skill/main/skills/law/SKILL.md
+mkdir -p .claude/skills/law-search
+curl -o .claude/skills/law-search-search/SKILL.md \
+  https://raw.githubusercontent.com/iamupd/law-search/main/skills/law-search/SKILL.md
 ```
 
 ---
@@ -53,24 +53,24 @@ echo 'LAW_API_OC_KEY="your@email.com"' >> .env
 ## 사용법
 
 ```
-/law search <키워드>              법령 검색
-/law article <법령명> [조항]       조문 조회
-/law diff <법령명> <조항> [비교]   API vs 로컬 비교
-/law recent [법령명] [일수]        최근 개정 조회
-/law history <법령명>             법령 연혁
-/law map <O-코드>                의무항목 매핑 (DB 모드)
+/law-search search <키워드>              법령 검색
+/law-search article <법령명> [조항]       조문 조회
+/law-search diff <법령명> <조항> [비교]   API vs 로컬 비교
+/law-search recent [법령명] [일수]        최근 개정 조회
+/law-search history <법령명>             법령 연혁
+/law-search map <O-코드>                의무항목 매핑 (DB 모드)
 ```
 
 ### 예시
 
 ```
-/law search 안전보건교육
-/law article 중대재해처벌법 제4조
-/law article 산업안전보건법              # 조항 생략 → 전체 목차
-/law diff 산업안전보건법 제29조 ./docs/old-version.txt
-/law recent 중대재해처벌법 90
-/law history 산업안전보건법
-/law map O-01                          # DB 모드 전용
+/law-search search 안전보건교육
+/law-search article 중대재해처벌법 제4조
+/law-search article 산업안전보건법              # 조항 생략 → 전체 목차
+/law-search diff 산업안전보건법 제29조 ./docs/old-version.txt
+/law-search recent 중대재해처벌법 90
+/law-search history 산업안전보건법
+/law-search map O-01                          # DB 모드 전용
 ```
 
 ---
@@ -160,23 +160,23 @@ DB 모드는 자동 감지됩니다. Prisma 기반 프로젝트가 아니면 범
 
 | 커맨드 | 설명 | 모드 |
 |--------|------|:----:|
-| `/law search <키워드>` | 키워드로 법령 검색 | 범용 |
-| `/law article <법령명> [조항]` | 조문 조회 (계층 구조 포함) | 범용 |
-| `/law diff <법령명> <조항> [비교대상]` | API 최신 vs 로컬 파일/DB 비교 | 범용 |
-| `/law recent [법령명] [일수]` | 최근 N일 개정 법령 조회 | 범용 |
-| `/law history <법령명>` | 법령 제정·개정 연혁 | 범용 |
-| `/law map <O-코드>` | 의무항목 → 근거법령 역추적 | DB |
+| `/law-search search <키워드>` | 키워드로 법령 검색 | 범용 |
+| `/law-search article <법령명> [조항]` | 조문 조회 (계층 구조 포함) | 범용 |
+| `/law-search diff <법령명> <조항> [비교대상]` | API 최신 vs 로컬 파일/DB 비교 | 범용 |
+| `/law-search recent [법령명] [일수]` | 최근 N일 개정 법령 조회 | 범용 |
+| `/law-search history <법령명>` | 법령 제정·개정 연혁 | 범용 |
+| `/law-search map <O-코드>` | 의무항목 → 근거법령 역추적 | DB |
 
 ---
 
 ## 구조
 
 ```
-claude-law-skill/
+law-search/
 ├── .claude-plugin/
 │   └── plugin.json              # 플러그인 매니페스트
 ├── skills/
-│   └── law/
+│   └── law-search/
 │       └── SKILL.md             # 스킬 정의 (핵심 파일)
 ├── README.md                    # 이 문서
 └── LICENSE                      # MIT
